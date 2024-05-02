@@ -1,0 +1,431 @@
+\documentclass{article}
+\usepackage{amsmath} % Pour les environnements et commandes mathématiques
+\usepackage{import}
+\newif\ifsol
+\soltrue
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%% PACKAGES %%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[utf8]{inputenc}  
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+%\usepackage{multicol} % pour écrire sur plusieurs colonnes
+%\usepackage{booktabs} % pour faire de jolis tableaux
+\usepackage{enumerate,color}
+\usepackage{amsthm} % package pour /newtheorem
+\usepackage{amsmath,amsfonts,amssymb}
+%\usepackage{euscript,mathrsfs}
+%\usepackage{mathdots} % pour faire des \iddots
+\usepackage{stmaryrd} % pour avoir \llbracket et \rrbracket
+\PassOptionsToPackage{svgnames}{xcolor}
+%\usepackage[svgnames]{xcolor} % couleurs supplémentaires
+\usepackage{graphicx}
+%\usepackage{tabu} % plus performant que tabular...
+%\usepackage{diagbox} % pour faire des tableaux à double entrée
+\usepackage{float} % pour imposer la position des figues, tables avec l'option [H]  "here"
+% \usepackage[hyperfootnotes=false,colorlinks=true]{hyperref}
+% \usepackage{url} % pour citer des url avec \url{}
+%\usepackage[bottom]{footmisc} % Pour des footnotes vraiment en bas de page
+\usepackage{mathtools}
+% \usepackage{tabularx} % pour faire des tabularx, option X pour que le texte passe automatiquement à la ligne en étant centré à gauche
+\usepackage{numprint}
+
+\usepackage{tikz, pgfplots}
+\usepackage[european resistor, european voltage, european current]{circuitikz}
+\usetikzlibrary{arrows,shapes,positioning}
+\usetikzlibrary{decorations.markings,decorations.pathmorphing,
+decorations.pathreplacing}
+\usetikzlibrary{calc,patterns,shapes.geometric}
+
+\usepackage{mdframed}%, bbm}
+
+%\usepackage{tikz}
+%\newcommand{\tikzmark}[1]{\tikz[overlay, remember picture] \coordinate (#1);}
+% attention, il faut encadrer tout tikzpicture avec un tikzmark de \shorthandoff{;}... \shorthandon{;}
+%\usetikzlibrary{decorations.markings}
+
+%\usepackage{blkarray} % Pour faire des blockarray
+%\newcommand{\indice}[1]{\mbox{\scriptsize#1}}% Matrix index
+\usepackage[francais]{babel}
+
+%\usepackage{tabstackengine}
+%\stackMath
+%
+%\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+%% Un type de colonne à utiliser avec un paramètre (ex. C{10mm}) ; retour à la ligne possible avec ce 
+%% type de colonne
+%\usepackage{tkz-tab}  % pour faire des tableaux de variation
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%% DIVERS %%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% ENVIRONNEMENT MDFRAMED AVEC NOTES EN BAS DE PAGE
+\newenvironment{mdframedwithfoot}
+{   
+    \savenotes
+    \begin{mdframed}
+    \stepcounter{footnote}
+    \renewcommand{\thempfootnote}{\arabic{footnote}}
+    }
+{
+    \end{mdframed}
+    \spewnotes
+}
+
+% Pour faire une note de bas de page sans marqueur avec \blfootnote
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+\setlength{\parindent}{0cm} % supprime l'indentation automatique
+
+
+\newcounter{exo}
+\renewcommand\theexo{\arabic{exo}}
+\newenvironment{ex}[2]
+{
+{\par \refstepcounter{exo}\medskip\noindent\textsc{\bf Exercice \theexo}\space  }
+#1 \quad{\textit{#2}}\newline
+\noindent
+}
+
+
+
+%____________________________ TITRE DES CHAPITRES _______________
+%\newcommand\chap[1]
+%{
+%\begin{center}
+%\vspace*{\baselineskip} % White space at the top of the page
+%\rule{\textwidth}{0.4pt}\\[\baselineskip] % Thin horizontal line
+%\vspace{3mm}
+%\LARGE \vspace{5mm}\sffamily\bfseries {\color{rouge} {#1}}
+%\\[0.2\baselineskip] % Title
+%\vspace{7mm}
+%\rule{\textwidth}{0.4pt}\vspace*{-\baselineskip}\vspace{3.2pt} % Thin horizontal line
+%% \rule{\textwidth}{1.6pt}\\[\baselineskip] % Thick horizontal line
+%\end{center}
+%\vspace*{23mm}
+%}
+\newcommand\chap[1]
+{
+\begin{center}
+%\vspace*{\baselineskip} % White space at the top of the page
+\rule{\textwidth}{0.4pt}\\[\baselineskip] % Thin horizontal line
+\vspace{2mm}
+\LARGE \vspace{2mm}\sffamily\bfseries {\color{rouge} {#1}}
+\\[0.2\baselineskip] % Title
+\vspace{2mm}
+\rule{\textwidth}{0.4pt}\vspace*{-\baselineskip}\vspace{3.2pt} % Thin horizontal line
+% \rule{\textwidth}{1.6pt}\\[\baselineskip] % Thick horizontal line
+\end{center}
+\vspace*{15mm}
+}
+
+
+
+
+
+% entete contenant la mise en page du cours
+
+\usepackage{footnote} % à ne pas mettre dans l'entete général : pas compatible avec Beamer
+
+%\usepackage[framemethod=tikz]{mdframed}
+%\usetikzlibrary{shadows,shadings}
+%\usetikzlibrary{arrows,intersections}
+%\usepackage{caption}
+
+
+
+
+
+% LES MARGES
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+%\setlength{\hoffset}{-21.7mm}
+%\setlength{\textwidth}{16.5cm}
+%\setlength{\voffset}{-17.5mm}
+%\setlength{\textheight}{24.5cm}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\date{}% Pour que la date n'apparaisse pas en premi\`ere page
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{sectsty} % to change section font 
+\usepackage{titlesec}
+\allsectionsfont{\normalfont\sffamily\bfseries\color{rouge}}
+
+\usepackage[colorlinks=true,linkcolor=rouge]{hyperref}
+
+
+
+% ENTETE QUI CONTIENT LES DÉFINITIONS DES ENVIRONNEMENTS THEOREME DEFINITION ALGORITHME ETC
+
+
+% \newenvironment{theoreme}[1][]
+% {\begin{mdframed}[style=theoremstyle,theoremtitle={#1}]\relax}{\end{mdframed}}
+
+\usepackage{bold-extra}
+
+
+
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% COULEURS
+\definecolor{bleu}{RGB}{31,74,134}
+\definecolor{rouge}{RGB}{164,0,0}
+\definecolor{vert}{RGB}{77,154,6}
+\definecolor{CCoral}{RGB}{0,127,176}
+\definecolor{CIndianRed}{RGB}{51,163,163} 
+\definecolor{Vert}{RGB}{51,102,0}
+\definecolor{Gris}{RGB}{192,192,192}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\definecolor{DarkBlue}{RGB}{4,6,76}
+
+
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% STYLES POUR LES THEOREMES, DEFINITIONS, ETC.
+\mdfdefinestyle{commun}{
+roundcorner=2pt,
+linewidth=.5pt,
+frametitlerule=false,
+backgroundcolor=Gray!15,
+innertopmargin=\topskip,
+outerlinewidth=.5,
+ntheorem=true,
+skipabove=\baselineskip,
+frametitlebelowskip=0mm,
+skipbelow=\baselineskip,
+frametitlefont=\color{white}\sffamily\bfseries,
+theoremseparator={\hspace{3mm}},
+theoremtitlefont= \itshape,
+nobreak=true,
+innertopmargin=5pt,
+}
+
+\mdfdefinestyle{defstyle}{
+linecolor=vert,
+frametitlebackgroundcolor=vert
+}
+
+\mdfdefinestyle{thstyle}{
+linecolor=rouge,
+frametitlebackgroundcolor=rouge
+}
+
+\mdfdefinestyle{Corstyle}{
+linecolor=rouge,
+frametitlebackgroundcolor=rouge
+}
+
+\mdfdefinestyle{lemstyle}{
+linecolor=bleu,
+frametitlebackgroundcolor=bleu
+}
+
+\mdfdefinestyle{propstyle}{
+linecolor=bleu,
+frametitlebackgroundcolor=bleu
+}
+
+\mdfdefinestyle{corstyle}{
+linecolor=bleu,
+frametitlebackgroundcolor=bleu
+}
+
+\mdfdefinestyle{aretenirstyle}{
+linecolor=bleu,
+frametitlebackgroundcolor=bleu
+}
+
+\mdfdefinestyle{methodestyle}{
+linecolor=bleu,
+frametitlebackgroundcolor=bleu
+}
+
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% DEFINITION DES ENVIRONNEMENTS
+\mdtheorem[style=commun,style=defstyle]{defi}{D\'efinition }
+\mdtheorem[style=commun,style=defstyle]{axiome}{Axiome }%[section]
+\mdtheorem[style=commun,style=thstyle]{theo}{\textsc{Th\'eor\`eme} }%[section]
+\mdtheorem[style=commun,style=corstyle]{cor}{Corollaire}%[section]
+\mdtheorem[style=commun,style=Corstyle]{ccor}{Corollaire}%[section]
+\mdtheorem[style=commun,style=propstyle]{prop}{Propriété}%[section]
+\mdtheorem[style=commun,style=aretenirstyle]{aretenir}{\textsc{\`A retenir}}
+\mdtheorem[style=commun,style=aretenirstyle]{methode}{\textsc{Point méthode}}
+\mdtheorem[style=commun,style=lemstyle]{lemme}{Lemme}%[section]
+\mdtheorem[style=algostyle]{al}{}
+\mdtheorem[style=cadre]{cadre}{}
+\mdtheorem[style=exo_discret_style]{exod}{\textsc{\hspace{3.4mm}Exercice}\hspace{-1.4mm} } \newcounter{numexos}%Création d'un compteur qui s'appelle numexos
+\setcounter{numexos}{0}%initialisation du compteur
+\newcommand{\exercice}[1]{%Création d'une macro ayant un paramètre
+\addtocounter{numexos}{1}%chaque fois que cette macro est appelée, elle ajoute 1 au compteur numexos
+\textcolor{blue!40!black}{\textsf{\textbf{\textsc{\hspace{3.4mm}Exercice}}}\, \textsf{\textbf{\thenumexos}}\,\hspace{1.4mm}}\,#1%Met en bleu Exercice et la valeur du compteur appelée par \thenumeexos
+}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% ENVIRONNEMENT PREUVES
+\newenvironment{pr}[1][Preuve]
+{{\sffamily\bfseries \color{DarkBlue}{#1}}\quad \color{DarkBlue} }
+{\vspace{3mm} }
+
+
+
+%%%\import{/Users/alizee/Documents/autre/lycee/entetes/}{entetes_newcommand}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% NOUVELLES COMMANDES %%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\R}{\mathbb {R}}
+\newcommand{\N}{\mathbb {N}}
+\newcommand{\p}{\mathbb {P}}
+\newcommand{\Q}{\mathbb {Q}}
+\newcommand{\Z}{\mathbb {Z}}
+\newcommand{\C}{\mathbb {C}}
+\newcommand{\NN}{\mathcal {N}}
+\newcommand{\cC}{\mathcal {C}}
+\newcommand{\E}{\mathbb {E}}
+\newcommand{\nd}{\noindent}
+% étoile
+\newcommand{\e}{$\ast$}
+\newcommand{\ee}{$\mathbf{\ast \hspace{-.2mm}\ast   } $}
+\newcommand{\eee}{$\ast \hspace{-.6mm} \ast \hspace{-.6mm} \ast$ }
+
+\newcommand{\ssi}{si, et seulement si, }
+\newcommand{\mq}{Montrer que }
+\newcommand{\ep}{\varepsilon}
+\newcommand{\cad}{c'est-à-dire }
+\renewcommand{\Im}{\mathfrak{Im}}
+\renewcommand{\Re}{\mathfrak{Re}}
+\newcommand{\dx}{\, \mathrm{d}}
+\newcommand{\dy}{\hspace{.6mm} dy }
+\newcommand{\dz}{\hspace{.6mm} dz }
+\newcommand{\dt}{\hspace{.6mm} dt }
+\newcommand{\du}{\hspace{.6mm} du }
+\newcommand{\dv}{\hspace{.6mm} dv }
+\newcommand{\n}{_{n\in\N}}
+\newcommand{\nstar}{_{n\in\N^*}}
+\newcommand{\eq}{\;\Leftrightarrow\;}
+\newcommand{\impl}{\;\Rightarrow \;}
+\newcommand{\va}{variable aléatoire }
+\newcommand{\vas}{variables aléatoires }
+\renewcommand{\r}{\rightarrow}
+\newcommand{\lr}{\longrightarrow}
+\newcommand{\vide}{\varnothing}
+
+\newcommand{\titre}[1]{{\sffamily\bfseries \color{DarkBlue}{#1}\quad} }
+\newcommand{\rem}{\titre{Remarque}}
+\newcommand{\rems}{\titre{Remarques}}
+\newcommand{\exo}{\titre{Exercice}}
+\newcommand{\exos}{\titre{Exercices}}
+\newcommand{\nota}{\titre{Notation}}
+\newcommand{\notas}{\titre{Notations}}
+\newcommand{\exe}{\titre{Exemple}}
+\newcommand{\exes}{\titre{Exemples}}
+\newcommand{\cexe}{\titre{Contre-exemple}}
+\newcommand{\cexes}{\titre{Contre-exemples}}
+
+\newcounter{questions}
+\newcommand{\quest}{\titre{\refstepcounter{questions} \thequestions}}
+
+\newcommand{\saut}{\vspace{1.5em}}
+
+\newcommand{\ds}{\displaystyle}
+
+
+\renewcommand{\P}{\mathbb{P}}
+\renewcommand{\geq}{\geqslant}
+\renewcommand{\leq}{\leqslant}
+\newcommand{\1}{\ensuremath{\mathbbm{1}}}
+
+
+\DeclareMathOperator{\re}{\mathfrak{Re}}
+\DeclareMathOperator{\sh}{\mathrm{sh}}
+\DeclareMathOperator{\ch}{\mathrm{ch}}
+\DeclareMathOperator{\sinc}{\mathrm{sinc}}
+
+\newcommand{\rep}[1]{\ifsol
+\vspace{1mm}
+\begin{mdframed}[backgroundcolor=gray!10,roundcorner=3pt,nobreak=false,frametitlebelowskip=0mm]
+\small #1
+\end{mdframed}
+\vspace{2mm}\fi}
+
+
+
+%\usepackage{cellspace}
+%\usepackage{slashbox}
+
+%\newcolumntype{C}{Sc}
+%\setlength{\cellspacetoplimit}{4pt}
+%\setlength{\cellspacebottomlimit}{4pt}
+
+\begin{document}
+
+\subsection*{Exercice 1}
+
+Soient $n \in \mathbb{N}$ tel que $n \geq 3$ et $b \in \mathbb{R}^n$, de composantes $(b_1, \ldots, b_n)$. On cherche $x \in \mathbb{R}^n$, de composantes $(x_1, \ldots, x_n)$, solution de
+\[
+\begin{cases}
+4x_1 + x_2 = b_1, \\
+x_{i-1} + 4x_i + x_{i+1} = b_i, & i = 2, \ldots, n - 1, \\
+x_{n-1} + 4x_n = b_n.
+\end{cases}
+\]
+\begin{enumerate}
+    \item On suppose, dans cette question uniquement, que $b = 0$.
+    \begin{enumerate}
+        \item Pour tout $i \in \{2, \ldots, n-1\},$ on a:\\
+$4 |x_i|\leq |x_{i-1}|+|x_{i+1}|\leq 2 \|x\|_\infty,$
+avec $4 |x_1|\leq |x_2|\leq \|x\|_\infty$ et $4 |x_{n}|\leq |x_2|\leq \|x\|_\infty,$
+d'o\`u le r\'esultat. 
+
+
+
+        \item Ainsi on a pour tout $i \in \{1, \ldots, n\},$ $|x_i|\leq \frac{1}{2}\|x\|_{\infty}$. Or si $\|x\|_{\infty}\neq 0,$ il existe $i_0  \in \{1, \ldots, n\}$ tel que $\|x\|_{\infty}=|x_{i_{0}}|\neq 0$ ce qui contredit l'in\'egalit\'e pr\'ec\'edente.
+    \end{enumerate}
+\item Le syst\`eme pr\'ec\'edent s'\'ecrit $Ax=b$ avec la matrice $A$ donn\'e par le code Python suivant: \\
+def matrice(n):\\
+	v=ones(n-1)\\
+	A= 4*eye(n) + diag(v,1)+diag(v,-1)\\
+	return \\
+    \item Montrer que dans le cas d’un second membre quelconque $b$, il existe une unique $x \in \mathbb{R}^n$ solution du système linéaire.
+    \item Afin de résoudre le système, on considère la méthode itérative suivante : $x^{(0)} = 0 \in \mathbb{R}^n$ et
+    \[
+    \begin{cases}
+    x^{(k+1)}_1 = \alpha x^{(k)}_1 + \frac{\alpha - 1}{4} (x^{(k)}_2 - b_1), \\
+    x^{(k+1)}_i = \alpha x^{(k)}_i + \frac{\alpha - 1}{4} (x^{(k)}_{i-1} + x^{(k)}_{i+1} - b_i), & i = 2, \ldots, n - 1, \\
+    x^{(k+1)}_n = \alpha x^{(k)}_n + \frac{\alpha - 1}{4} (x^{(k)}_{n-1} - b_n).
+    \end{cases}
+    \]
+    avec pour paramètre $\alpha \in \mathbb{R}$. 
+    \begin{enumerate}
+        \item Montrer que pour tout $\alpha \in \mathbb{R}$, on a
+        \[
+        \|x^{(k+1)} - x^{(k)}\|_\infty \leq \left(|\alpha| + \frac{|\alpha - 1|}{2}\right) \|x^{(k)} - x\|_\infty.
+        \]
+        \item Trouver $\alpha_{\text{min}}, \alpha_{\text{max}} \in \mathbb{R}$, tels que $\alpha \in ]\alpha_{\text{min}}, \alpha_{\text{max}}[$ si et seulement si $|\alpha| + \frac{|\alpha - 1|}{2} < 1$.
+        \item Montrer que la méthode itérative converge vers $x$ pour $\alpha \in ]\alpha_{\text{min}}, \alpha_{\text{max}}[$.
+        \item Trouver $\alpha_0 \in \mathbb{R}$ qui minimise la quantité $|\alpha| + \frac{|\alpha - 1|}{2}.$ Que peut-on d\'eduire de la convergence du syst\`eme pour ce $\alpha_0$?
+
+    \end{enumerate}
+\end{enumerate}
+
+
+
+\subsection*{Exercice 2}
+
+
+
+
+
+
+\end{document}
